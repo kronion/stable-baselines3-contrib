@@ -297,7 +297,6 @@ class MaskablePPO(OnPolicyAlgorithm):
         """
 
         # TODO is this assert needed?
-        assert isinstance(rollout_buffer, MaskableRolloutBuffer), "RolloutBuffer doesn't support action masking"
         assert self._last_obs is not None, "No previous observation was provided"
         n_steps = 0
         action_masks = None
