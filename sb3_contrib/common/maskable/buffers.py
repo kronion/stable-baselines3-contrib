@@ -1,10 +1,17 @@
-from typing import Generator, NamedTuple, Optional, Dict, Union
+import warnings
+from abc import ABC, abstractmethod
+from typing import Any, Dict, Generator, List, Optional, Union, NamedTuple
 
 import numpy as np
 import torch as th
 from gym import spaces
-from stable_baselines3.common.buffers import RolloutBuffer
+
+from stable_baselines3.common.preprocessing import get_action_dim, get_obs_shape
+from stable_baselines3.common.type_aliases import (
+    RolloutBufferSamples,
+)
 from stable_baselines3.common.vec_env import VecNormalize
+from stable_baselines3.common.buffers import RolloutBuffer
 
 TensorDict = Dict[Union[str, int], th.Tensor]
 
