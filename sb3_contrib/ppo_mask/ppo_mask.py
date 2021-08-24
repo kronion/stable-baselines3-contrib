@@ -14,7 +14,7 @@ from stable_baselines3.common.utils import explained_variance, get_schedule_fn, 
 from stable_baselines3.common.vec_env import VecEnv
 from torch.nn import functional as F
 
-from sb3_contrib.common.maskable.buffers import MaskableRolloutBuffer
+from sb3_contrib.common.maskable.buffers import MaskableRolloutBuffer, MaskableDictRolloutBuffer
 from sb3_contrib.common.maskable.policies import MaskableActorCriticPolicy
 from sb3_contrib.common.maskable.utils import get_action_masks, is_masking_supported
 
@@ -139,7 +139,10 @@ class MaskablePPO(OnPolicyAlgorithm):
         if not isinstance(self.policy, MaskableActorCriticPolicy):
             raise ValueError("Policy must subclass MaskableActorCriticPolicy")
 
-        self.rollout_buffer = MaskableRolloutBuffer(
+        buffer_cls = MaskableDictRolloutBuffer if isinstance(self.observation_space, gym.spaces.Dict) \
+            else MaskableRolloutBuffer
+
+        self.rollout_buffer = buffer_cls(
             self.n_steps,
             self.observation_space,
             self.action_space,
