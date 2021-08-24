@@ -1,4 +1,4 @@
-from typing import Generator, NamedTuple, Optional
+from typing import Generator, NamedTuple, Optional, Dict, Union
 
 import numpy as np
 import torch as th
