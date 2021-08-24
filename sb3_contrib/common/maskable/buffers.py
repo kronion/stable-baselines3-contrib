@@ -6,6 +6,8 @@ from gym import spaces
 from stable_baselines3.common.buffers import RolloutBuffer
 from stable_baselines3.common.vec_env import VecNormalize
 
+TensorDict = Dict[Union[str, int], th.Tensor]
+
 
 class MaskableRolloutBufferSamples(NamedTuple):
     observations: th.Tensor
