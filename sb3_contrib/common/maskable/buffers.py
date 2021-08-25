@@ -1,15 +1,9 @@
-import warnings
-from abc import ABC, abstractmethod
-from typing import Any, Dict, Generator, List, Optional, Union, NamedTuple
+from typing import Dict, Generator, Optional, Union, NamedTuple
 
 import numpy as np
 import torch as th
 from gym import spaces
 
-from stable_baselines3.common.preprocessing import get_action_dim, get_obs_shape
-from stable_baselines3.common.type_aliases import (
-    RolloutBufferSamples,
-)
 from stable_baselines3.common.vec_env import VecNormalize
 from stable_baselines3.common.buffers import RolloutBuffer
 
@@ -117,6 +111,7 @@ class MaskableDictRolloutBuffer(RolloutBuffer):
     """
     Dict Rollout buffer used in on-policy algorithms like A2C/PPO.
     Extends the RolloutBuffer to use dictionary observations
+    It also stores the invalid action masks associated with each observation.
 
     It corresponds to ``buffer_size`` transitions collected
     using the current policy.
@@ -218,8 +213,7 @@ class MaskableDictRolloutBuffer(RolloutBuffer):
             self.observations[key][self.pos] = obs_
 
         if action_masks is not None:
-            # print(action_masks.shape, action.shape, self.action_masks.shape)
-            self.action_masks[self.pos] = np.array(action_masks)  # .reshape((self.n_envs,), self.action_space.n)
+            self.action_masks[self.pos] = np.array(action_masks)
         self.actions[self.pos] = np.array(action).copy()
         self.rewards[self.pos] = np.array(reward).copy()
         self.episode_starts[self.pos] = np.array(episode_start).copy()
